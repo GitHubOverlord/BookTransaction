@@ -85,7 +85,7 @@ public class UserAction extends BaseActionSupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public void login() throws Exception {
+	public void login(){
 		System.out.println("userName=" + userName + " psw=" + psw);
 		UserDao userDao = new UserDao();
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
