@@ -1,0 +1,17 @@
+body{width: 100%;margin: 0 auto;background: #165C9B;}
+a{text-decoration: none;color: black;}
+.active{color: blue;}
+.center{width: 30%;margin: 0 auto;padding-top: 100px;}
+.center_top{font-size: 30px;color: white;font-weight: 800;}
+.center_bottom{width: 100%;background: white;height: 230px;margin-top: 10px;}
+.center_bottom_width{width: 90%;margin: 0 auto;}
+.center_bottom_top{font-size: 20px;color: #ccccc;padding: 20px 20px 0px 20px;font-weight: 800;}
+.center_bottom_center{margin: 20px 20px 0px 20px;}
+.center_bottom_center input{width: 90%;margin-bottom: 10px;padding: 10px;font-size: 15px;font-weight: 800;z-index: 0;background: url(../entry/3.png);}
+.center_bottom_display{float: right;color: red;font-size: 10px;width: 100%;text-align: center;display: none;}
+.center_bottom_botom{float: right;margin-right: 30px;}
+.center_bottom_botom input{font-size: 15px;background: url(../entry/1.png) repeat-x;color: white;width: 55px;}
+.center_bottom_botom input:link {background:#FF0000;} /* 未访问的链接 */
+.center_bottom_botom input:visited {background:#00FF00;} /* 已访问的链接 */
+.center_bottom_botom input:hover {background:blue;}
+.center_bottom_botom:active {background:#0000FF;float: center}
