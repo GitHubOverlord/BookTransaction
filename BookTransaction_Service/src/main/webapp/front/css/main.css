@@ -1,0 +1,32 @@
+#container-carousel{
+	width: 100%;
+}
+#container-carousel .carousel-inner .item{
+	height: 400px;
+}
+.layout{
+	width:1024px;
+	margin:0 auto;
+}
+.m10{margin-top: 10px}
+.m20{margin-top: 20px}
+.m30{margin-top: 30px}
+.m40{margin-top: 40px}
+.m50{margin-top: 50px}
+.none{display: none;}
+.tc{text-align: center;}
+.f12{font-size: 12px;}
+.f20{font-size: 20px;}
+
+.expand-btn{
+	cursor: pointer;
+}
+.expand-btn:hover{
+	background: #d9edf7;
+}
+
+footer{
+	background: #d9edf7;
+	padding: 20px 0;
+	line-height: 30px;
+}
