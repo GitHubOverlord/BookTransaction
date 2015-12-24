@@ -61,11 +61,11 @@ jQuery(document).ready(function($) {
 		// 切换小箭头
 		$(this).find('span').toggleClass('glyphicon-triangle-bottom').toggleClass('glyphicon-triangle-top');
 	});
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 // 登录注册
-/////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
 	// 弹出框
 	$("#navLoginBtn").click(function(e) {
 		$("#loginModal").modal('show');
@@ -127,4 +127,49 @@ jQuery(document).ready(function($) {
 	$('#loginBtn').click(function(e) {
 		$('#loginForm').submit();
 	});
-});
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+// 修改个人资料
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+	
+	// 弹出修改框
+	$("#navModifyBtn").click(function(e) {
+		$("#modifyModal").modal('show');
+	});
+	// 提交按钮
+	$('#modifyBtn').click(function(e) {
+		$('#modifyForm').submit();
+	});
+
+	// 表单验证
+	$('#modifyForm').validate({
+		rules:{
+			nickName:{
+				required:true,
+				maxlength:20
+			},
+			oldPassWord:{
+				required:true,
+				minlength:6,
+				equalTo:"#orginPassword"
+			},
+			passWord:{
+				required:true,
+				minlength:6
+			},
+			grade:{
+				required:true
+			},
+			major:{
+				required:true
+			}
+		},
+		errorPlacement: function(error, element) {  
+		  error.addClass('text-danger').appendTo(element.parent().next('.error'));
+		},
+		submitHandler: function(form) {      
+			$(form).ajaxSubmit();
+		}
+	});
+}); // end of ready

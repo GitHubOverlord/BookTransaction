@@ -27,6 +27,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="javascript:;" id="navLoginBtn">登陆</a></li>
             <li><a href="javascript:;" id="navRegistBtn">注册</a></li>
+            <li><a href="javascript:;" id="navModifyBtn">修改个人信息</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -216,6 +217,98 @@
 									</div>
 								</div>
 							</div>
+							<div class="col-xs-12">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-2">ID:郑成军</div>
+											<div class="col-xs-2">年级：大二</div>
+											<div class="col-xs-2">专业：通信</div>
+											<div class="col-xs-4">课程：java</div>
+											<div class="col-xs-2 ">日期：2015-12-21</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<h4 class="text-info">标签</h4>
+										<div class="tags f20">
+											<span class="label label-info"> <i class="glyphicon glyphicon-tag f12"></i> C++</span>
+											<span class="label label-info"> <i class="glyphicon glyphicon-tag f12"></i> Linux操作系统</span>
+											<span class="label label-info"> <i class="glyphicon glyphicon-tag f12"></i> 通信工程</span>
+											<span class="label label-info"> <i class="glyphicon glyphicon-tag f12"></i> 英语口语</span>
+										</div>
+									</div>
+									<!-- Table -->
+								  <table class="table table-hover table-striped none">
+						        <thead>
+						          <tr>
+						            <th>书名</th>
+						            <th>新旧程度</th>
+						            <th>是否有练习</th>
+						            <th>价格</th>
+						            <th>说明</th>
+						          </tr>
+						        </thead>
+						        <tbody>
+						          <tr>
+						            <th>Java</th>
+						            <td>90%</td>
+						            <td>无</td>
+						            <td>&yen;15</td>
+						            <td>好用又实惠</td>
+						          </tr>
+						          <tr>
+						            <th>Java</th>
+						            <td>90%</td>
+						            <td>无</td>
+						            <td>&yen;15</td>
+						            <td>好用又实惠</td>
+						          </tr>
+						          <tr>
+						            <th>Java</th>
+						            <td>90%</td>
+						            <td>无</td>
+						            <td>&yen;15</td>
+						            <td>好用又实惠</td>
+						          </tr>
+						          <tr>
+						            <th>Java</th>
+						            <td>90%</td>
+						            <td>无</td>
+						            <td>&yen;15</td>
+						            <td>好用又实惠</td>
+						          </tr>
+						          <tr>
+						            <th>Java</th>
+						            <td>90%</td>
+						            <td>无</td>
+						            <td>&yen;15</td>
+						            <td>好用又实惠</td>
+						          </tr>
+						          
+						        </tbody>
+						        <tfoot>
+						        	<tr class="info">
+						        		<th colspan="5">
+						        		<div class="row">
+						        			<div class="col-xs-3">
+						        				他的QQ： <span class="qq">289856545</span>
+						        			</div>
+						        			<div class="col-xs-3">
+						        				他的电话： <span class="phone">13898654565</span><br>
+						        			</div>
+						        			<div class="col-xs-6">
+								        		说明：<span class="desc">想要的同学请和我qq联系~~~</span>
+						        			</div>
+						        		</div>
+						        		</th>
+						        	</tr>
+						        </tfoot>
+						      </table>
+									<div class="panel-footer tc expand-btn">
+											<span class="glyphicon glyphicon-triangle-bottom"></span> 展开查看该用户寄售的所有书籍
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -241,7 +334,7 @@
 							<br>
 			        <div class="input-group input-group-lg">
 							  <span class="input-group-addon"> <span class="glyphicon glyphicon-lock"></span> </span>
-							  <input type="text" class="form-control" name="passWord"  placeholder="密码" />
+							  <input type="password" class="form-control" name="passWord"  placeholder="密码" />
 							</div>
 							<div class="error"></div>
 		        </form>
@@ -271,7 +364,7 @@
 						  </div>
 						  <div class="form-group">
 						    <label for="passWord">密码</label>
-						    <input type="text" class="form-control" name="passWord" placeholder="昵称">
+						    <input type="password" class="form-control" name="passWord" placeholder="昵称">
 						  </div>
 						  <div class="form-group">
 						    <label for="grade">年级</label>
@@ -295,6 +388,59 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" id="registBtn" class="btn btn-primary btn-block">注册</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<div id="modifyModal" class="modal fade">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">修改个人资料</h4>
+		      </div>
+		      <div class="modal-body">
+						<form id="modifyForm" >
+							<div class="form-group">
+						    <label for="nickName">昵称</label>
+						    <input type="text" class="form-control" name="nickName"  placeholder="昵称">
+						  </div>
+							<div class="error"></div>
+						  <div class="form-group">
+						    <label for="oldPassWord">旧密码</label>
+						    <input type="password" class="form-control" name="passWord"  placeholder="新密码">
+						  </div>
+						  <div class="error"></div>
+						  <div class="form-group">
+						    <label for="passWord">新密码</label>
+						    <input type="password" class="form-control" name="oldPassWord"  placeholder="新密码">
+						  </div>
+						  <div class="error"></div>
+						  <div class="form-group">
+						    <label for="grade">年级</label>
+						    <select name="grade" class="form-control">
+						     	<option value="1">大一</option>
+						     	<option value="2">大二</option>
+						     	<option value="3">大三</option>
+						     	<option value="4">大四</option>
+						    </select>
+						  </div>
+						  <div class="error"></div>
+						  <div class="form-group">
+						    <label for="major">专业</label>
+						    <select name="major" class="form-control">
+						    	<option value="1">计算机</option>
+						    	<option value="2">通信</option>
+						    	<option value="3">水利</option>
+						    	<option value="4">港航</option>
+						    </select>
+						  </div>
+						  <div class="error"></div>
+						</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" id="modifyBtn" class="btn btn-primary btn-block">确认修改</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
