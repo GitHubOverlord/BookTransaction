@@ -30,3 +30,9 @@ footer{
 	padding: 20px 0;
 	line-height: 30px;
 }
+.userPhoto{
+	position: absolute;
+	top:10px;
+	left: -25px;
+
+}
