@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		<title>用户发布图书</title>
+		<link rel="stylesheet" href="js/bootstrap/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/main.css" />
+	</head>
+	<body>
+
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-2">
+						<button class="btn btn-default btn-block" data-toggle="modal" data-target="#addModal">添加书籍</button>
+					</div>
+					<div class="col-xs-2">
+						<button class="btn btn-danger btn-block" id="deleteBtn">删除书籍</button>
+					</div>
+					<div class="col-xs-4"></div>
+					<div class="col-xs-2">
+						<button class="btn btn-success btn-block" id="sent">保存并发布</button>
+					</div>
+					<div class="col-xs-2">
+						<button class="btn btn-success btn-block">撤销发布</button>
+					</div>
+				</div>
+				<div class="mt10">
+					<p class="errorMessage bg-danger none"></p>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<form id="tableForm" class="form-inline">
+							<table id="myTable" class="table table-bordered table-hover bg-info">
+								<thead>
+									<th class="text-left">书名称</th>
+									<th class="text-left"width="8%">新旧程度</th>
+									<th class="text-left"width="9%">是否有练习</th>
+									<th class="text-left"width="20%">价格</th>
+									<th class="text-left">说明</th>
+								</thead>
+								<tbody>
+									
+								</tbody>
+								<tfoot>
+								<tr>
+									<td colspan="5">
+										<div class="row">
+											<div class="form-group col-xs-4">
+												<label for="orderContactPhone">手机号码:</label>
+												<input type="text" name="orderContactPhone" class="form-control" placeholder="">
+											</div>
+											<div class="form-group col-xs-4">
+												<label for="orderContactQQ">QQ:</label>
+												<input type="text" name="orderContactQQ" class="form-control" placeholder="">
+											</div>
+											<div class="form-group col-xs-4">
+												<label for="orderDescribe">订单说明:</label>
+												<input type="text" name="orderDescribe" class="form-control" placeholder="">
+											</div>
+										</div>
+
+									</td>
+								</tr>
+								</tfoot>
+							</table>
+						</form>
+					</div> <!-- end of col-xs-12 -->
+				</div><!-- end of row -->
+			</div><!-- end of container -->
+
+		<!-- Button trigger modal -->
+		<!-- Modal -->
+		<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">请选择书籍</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-5">
+								<div class="list-group" id="grade">
+									<a href="#" class="list-group-item list-group-item-info" data-value="1">大一(上)</a>
+									<a href="#" class="list-group-item list-group-item-info" data-value="2">大一(下)</a>
+									<a href="#" class="list-group-item list-group-item-info" data-value="3">大二(上)</a>
+									<a href="#" class="list-group-item list-group-item-info" data-value="4">大二(下)</a>
+									<a href="#" class="list-group-item list-group-item-info" data-value="5">大三(上)</a>
+									<a href="#" class="list-group-item list-group-item-info" data-value="6">大三(下)</a>
+									<a href="#" class="list-group-item list-group-item-info" data-value="7">大四(上)</a>
+									<a href="#" class="list-group-item list-group-item-info" data-value="8">大四(下)</a>
+								</div>
+							</div>
+							<div class="col-xs-5">
+								<div class="list-group" id="bookName">
+<!-- 									
+									<a href="#" class="list-group-item list-group-item-warning">C语言</a>
+									<a href="#" class="list-group-item list-group-item-warning">C++语言</a>
+									<a href="#" class="list-group-item list-group-item-warning">计算机网络</a>
+									<a href="#" class="list-group-item list-group-item-warning">数据库</a>
+									<a href="#" class="list-group-item list-group-item-warning">数据结构</a>
+									<a href="#" class="list-group-item list-group-item-warning">汇编语言</a>
+									<a href="#" class="list-group-item list-group-item-warning">操作系统</a>
+									<a href="#" class="list-group-item list-group-item-warning">C语言</a>
+ -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="addSure">确定</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Button trigger modal -->
+		<!-- Modal -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						确定删除吗？
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" id="deleteSure">确定</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/jquery/jquery-2.1.0.min.js"></script>
+		<script type="text/javascript" src="js/cookie/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/validation/jquery.validate.js"></script>
+		<script type="text/javascript" src="js/validation/additional-methods.min.js"></script>
+		<script type="text/javascript" src="js/validation/messages_zh.min.js"></script>
+		<script type="text/javascript" src="js/destribute.js"></script>
+
+	</body>
+</html>
