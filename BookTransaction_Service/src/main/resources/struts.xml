@@ -55,6 +55,58 @@
 			method="updateUserMessage">
 			<result type="json"></result>
 		</action>
+		<action name="getUserMessage" class="com.jun.book.servlet.UserAction"
+			method="getUserMessage">
+			<result type="json"></result>
+		</action>
+		<action name="getAllDepartmentAndMajor" class="com.jun.book.servlet.DepartmentAndMajorAction"
+			method="getAllDeaprtmentAndMajor">
+			<result type="json"></result>
+		</action>
+		<action name="insertDepartmentAndMajor" class="com.jun.book.servlet.DepartmentAndMajorAction"
+			method="createDepartmentAndMajor">
+			<result type="json"></result>
+		</action>
+		<action name="createProject" class="com.jun.book.servlet.ProjectAction"
+			method="createProject">
+			<result type="json"></result>
+		</action>
+		<action name="insertProject" class="com.jun.book.servlet.ProjectAction"
+			method="insertProject">
+			<result type="json"></result>
+		</action>
+		<action name="findAllProject" class="com.jun.book.servlet.ProjectAction"
+			method="findAllProject">
+			<result type="json"></result>
+		</action>
+		<action name="findProjectByMajorId" class="com.jun.book.servlet.ProjectAction"
+			method="findProjectByMajorId">
+			<result type="json"></result>
+		</action>
+		<action name="publishOrder" class="com.jun.book.servlet.OrderAction"
+			method="publishOrder">
+			<result type="json"></result>
+		</action>
+		<action name="getMyOrder" class="com.jun.book.servlet.OrderAction"
+			method="getMyOrder">
+			<result type="json"></result>
+		</action>
+		<action name="createOrder" class="com.jun.book.servlet.OrderAction"
+			method="createOrder">
+			<result type="json"></result>
+		</action>
+		<action name="setPublishOrderStatus" class="com.jun.book.servlet.OrderAction"
+			method="setPublishOrderStatus">
+			<result type="json"></result>
+		</action>
+		<action name="getAllOrderByCondition" class="com.jun.book.servlet.OrderAction"
+			method="getAllOrderByCondition">
+			<result type="json"></result>
+		</action>
+		<action name="searchOrder" class="com.jun.book.servlet.OrderAction"
+			method="searchOrder">
+			<result type="json"></result>
+		</action>
 
 	</package>
 </struts>

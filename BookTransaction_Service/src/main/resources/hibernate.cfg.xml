@@ -22,6 +22,10 @@
 		<!-- for jdbc transaction -->
 		<property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
 		<mapping class="com.jun.booktransaction.bean.UserBean" />
-
+		<mapping class="com.jun.booktransaction.bean.MajorBean" />
+		<mapping class="com.jun.booktransaction.bean.DepartmentBean" />
+		<mapping class="com.jun.booktransaction.bean.ProjectBean"/>
+		<mapping class="com.jun.booktransaction.bean.OrderBean"/>
+		<mapping class="com.jun.booktransaction.bean.OrderItemBean"/>
 	</session-factory>
 </hibernate-configuration>

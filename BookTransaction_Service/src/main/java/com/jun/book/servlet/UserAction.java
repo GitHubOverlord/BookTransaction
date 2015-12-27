@@ -85,12 +85,13 @@ public class UserAction extends BaseActionSupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public void login(){
+	public void login() {
 		System.out.println("userName=" + userName + " psw=" + psw);
 		UserDao userDao = new UserDao();
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put(UserBean.ATTR_USER_NAME, userName);
 		List<UserBean> users = userDao.findList(hashMap);
+		UserBean userBean = null;
 		int status = 0;
 		/**
 		 * Status状态码：1表示成功 2表示账号不存在 3表示密码错误 4表示账号被封
@@ -99,7 +100,8 @@ public class UserAction extends BaseActionSupport {
 			status = 2;
 			remind = "账号不存在";
 		} else {
-			UserBean userBean = users.get(0);
+			userBean = users.get(0);
+			System.out.println("userName="+userBean.getUserName()+" psw="+userBean.getPsw());
 			if (userBean.getPsw().equals(psw)) {// 如果账号密码相同
 				if (userBean.getIsUseAble()) {
 					status = 1;// 登录成功
@@ -114,7 +116,7 @@ public class UserAction extends BaseActionSupport {
 				remind = "密码错误";
 			}
 		}
-		PrintObjectToJson.print(response, status, remind, "");
+		PrintObjectToJson.print(response, status, remind, status==1?userBean:"");
 	}
 
 	/**
@@ -143,6 +145,7 @@ public class UserAction extends BaseActionSupport {
 			userBean.setUserName(userName);
 			userDao.save(userBean);
 			remind = "注册成功";
+			SessionUtils.putSession(userBean);
 		}
 		PrintObjectToJson.print(response, status, remind, userBean == null ? ""
 				: userBean);
@@ -183,6 +186,21 @@ public class UserAction extends BaseActionSupport {
 		}
 		PrintObjectToJson.print(response, status, remind,
 				updateUserBean == null ? "" : updateUserBean);
+	}
+	/**
+	 * 获取用户基本信息，status为1表示获取成功，2表示获取失败
+	 */
+	public void getUserMessage(){
+		UserBean userBean = SessionUtils.getSession();
+		int status = 0;
+		if (userBean == null) {
+			status = 2;
+			remind = "您还未登录";
+		}else {
+			status = 1;
+			remind = "登录成功";
+		}
+		PrintObjectToJson.print(response, status, remind, userBean == null ?"":userBean);
 	}
 
 }

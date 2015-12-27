@@ -1,5 +1,7 @@
 package com.jun.file.util;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,7 +28,13 @@ public class BaseActionSupport extends ActionSupport implements
 
 	public void setServletResponse(HttpServletResponse response) {
 		this.response = response;
-
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Access-Control-Allow-Origin", "*");
 	}
 
 	public void setServletRequest(HttpServletRequest request) {

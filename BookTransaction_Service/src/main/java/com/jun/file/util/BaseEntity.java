@@ -1,10 +1,10 @@
 package com.jun.file.util;
 
 public class BaseEntity {
-	private int status;
-	private String sessionId;
-	private String response;
-	private Object value;
+	private int status;//请求返回的状态码
+	private String sessionId;//这个是sessionID,因为我们不做持久化登录，所以不需要这个了
+	private String response;//响应的提示文字
+	private Object value;//返回真正内容
 
 	public BaseEntity(int status, String response, Object object,
 			String sessionId) {
