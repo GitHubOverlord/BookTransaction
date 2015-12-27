@@ -8,6 +8,22 @@
 	  	return false;
 	}, "和原来的密码不一样");
 })(jQuery);
+// 日期格式化工具
+Date.prototype.format = function (fmt) { //author: meizz 
+  var o = {
+      "M+": this.getMonth() + 1, //月份 
+      "d+": this.getDate(), //日 
+      "h+": this.getHours(), //小时 
+      "m+": this.getMinutes(), //分 
+      "s+": this.getSeconds(), //秒 
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+      "S": this.getMilliseconds() //毫秒 
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+  if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+  return fmt;
+}
 
 jQuery(document).ready(function($) {
 // //////////////////////////////////////////////////////////////
@@ -128,7 +144,7 @@ jQuery(document).ready(function($) {
 			course = json.value;
 			$.each(course,function (i ,item) {
 				$courseFilter.append('<button type="button" class="list-group-item" data-value="'+item.id+'">'+item.projectName+'</button>');
-			})
+			});
 		});
 	}
 	// 课程过滤
@@ -184,6 +200,7 @@ jQuery(document).ready(function($) {
 		errorPlacement: function(error, element) {  
 		  error.addClass('text-danger').appendTo(element.parent());
 		},
+
 		submitHandler: function(form) {
 			ajaxData = {};
 			$(form).find('[name]').each(function(i,item) {
@@ -277,7 +294,7 @@ jQuery(document).ready(function($) {
 		// 隐藏登录框
 		$('#loginModal').modal('hide');
 		// 显示用户名和默认图片
-		$('.userName').find('a').html( '<img class="img-circle userPhoto" src="img/userphoto/default.png" height="30" width="30" alt=""> ' + user.nickName);
+		$('.userName').find('a').html( '<img class="img-circle userPhoto" src="img/userphoto/default.png" height="30" width="30" > ' + user.nickName);
 		$('.userName').show();
 		// 显示发布图书和退出按钮
 		$('.releaseBook,.loginOut').show();
@@ -306,6 +323,7 @@ jQuery(document).ready(function($) {
   	$('.login,.regist').show();
 		$('.userName,.releaseBook,.loginOut').hide();
 		$.cookie('user','',{expires:-1});
+		$.get('http://192.168.1.108:8080/BookTransaction_Service/loginOutAction');
   }
 // //////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////
@@ -350,7 +368,7 @@ jQuery(document).ready(function($) {
 				required:true
 			}
 		},
-		errorPlacement: function(error, element) {  
+		errorPlacement: function(error, element) {
 		  error.addClass('text-danger').appendTo(element.parent().next('.error'));
 		},
 		submitHandler: function(form) {
@@ -379,5 +397,116 @@ jQuery(document).ready(function($) {
 			});
 			
 		}
-	});
+	});//end of
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// 获取订单信息并解析放入容器中
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	getOrder('http://192.168.1.108:8080/BookTransaction_Service/getAllOrderByCondition.action');
+	function getOrder(url){
+		var userInfoHTML = '';
+		var tfootHTML = '';
+		
+		var labelHTML = '';
+		var tbodyHTML = '';
+
+		var orderHTML = '';
+
+		var grade = {
+			"1" : "大一上",
+			"2" : "大一下",
+			"3" : "大二上",
+			"4" : "大二下",
+			"5" : "大三上",
+			"6" : "大三下",
+			"7" : "大四上",
+			"8" : "大四下"
+		}
+
+		var $ajaxContent = $('#ajax-content');
+
+		$.getJSON(url)
+		.done(function (json) {
+			var orderData = json.value;
+			console.log(orderData)
+			$ajaxContent.html('');
+			$.each(orderData, function(i,item) {
+				var order = item;
+				userInfoHTML = [
+					'<div class="panel-heading">',
+					'	<div class="row">',
+					'		<div class="col-xs-2">ID:'+ order.belongUserNickName +'</div>',
+					'		<div class="col-xs-2">年级：'+grade[ order.belongUserJunirClass ]+'</div>',
+					'		<div class="col-xs-6">专业：'+order.belongUserMajorName+'</div>',
+					'		<div class="col-xs-2 ">日期：'+new Date(order.createDate).format('yyyy-MM-dd')+'</div>',
+					'	</div>',
+					'</div>'
+				].join('');
+				tfootHTML = [
+					'<tfoot>',
+	        '	<tr class="info">',
+	        '		<th colspan="5">',
+	        '		<div class="row">',
+	        '			<div class="col-xs-3">',
+	        '				他(她)的QQ： <span class="qq">'+ order.contactQQ +'</span>',
+	        '			</div>',
+	        '			<div class="col-xs-3">',
+	        '				他(她)的电话： <span class="phone">'+ order.contactPhone +'</span><br>',
+	        '			</div>',
+	        '			<div class="col-xs-6">',
+			    '    		订单描述：<span class="desc">'+order.orderDescribe+'</span>',
+	        '			</div>',
+	        '		</div>',
+	        '		</th>',
+	        '	</tr>',
+	        '</tfoot>'
+				].join('');
+				tbodyHTML += '<tbody>';
+				labelHTML += '<div class="panel-body"><h4 class="text-info">标签</h4><div class="tags f20">'
+											
+				$.each(order.set ,function (i,book) {
+					tbodyHTML += '<tr> ' 
+					tbodyHTML += '<td> ' + book.bookName + ' </td>';
+					tbodyHTML += '<td> ' + book.oldDegree + ' </td>';
+					tbodyHTML += '<td> ' + book.haveExerciseBook + ' </td>';
+					tbodyHTML += '<td> ' + book.price + ' </td>';
+					tbodyHTML += '<td> ' + book.describle + ' </td>';
+					tbodyHTML += '</tr> ' 
+
+					labelHTML+= '<span class="label label-info mr10" style="display:inline-block;"> <i class="glyphicon glyphicon-tag f12"></i> '+book.bookName+' </span> \n';
+				});
+				
+				tbodyHTML += '</tbody>';
+				labelHTML += '</div></div>';
+
+				orderHTML = [
+					'<div class="col-xs-12">',
+					'	<div class="panel panel-default">',
+					userInfoHTML,
+					labelHTML,
+					'	  <table class="table table-hover table-striped none">',
+					'      <thead>',
+					'        <tr>',
+					'          <th>书名</th>',
+					'          <th>新旧程度</th>',
+					'          <th>是否有练习</th>',
+					'          <th>价格</th>',
+					'          <th>说明</th>',
+					'        </tr>',
+					'      </thead>',
+					tbodyHTML,
+					tfootHTML,
+					'      ',
+					'    </table>',
+					'		<div class="panel-footer tc expand-btn">',
+					'				<span class="glyphicon glyphicon-triangle-bottom"></span> 展开查看该用户寄售的所有书籍',
+					'		</div>',
+					'	</div>',
+					'</div>'
+				].join('');
+				$ajaxContent.append(orderHTML);
+			});// end of 一个用户的订单
+		})
+	}
 }); // end of ready
