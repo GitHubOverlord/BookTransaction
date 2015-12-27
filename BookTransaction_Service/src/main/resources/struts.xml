@@ -38,71 +38,87 @@
 			</interceptor-stack>
 
 		</interceptors>
-
+		<!-- 登录的action -->
 		<action name="loginAction" class="com.jun.book.servlet.UserAction"
 			method="login">
 			<result type="json"></result>
 		</action>
+		<!-- 注册的action -->
 		<action name="registerAction" class="com.jun.book.servlet.UserAction"
 			method="register">
 			<result type="json"></result>
 		</action>
+		<!-- 退出登录 -->
 		<action name="loginOutAction" class="com.jun.book.servlet.UserAction"
 			method="loginOut">
 			<result type="json"></result>
 		</action>
+		<!-- 更新用户信息 -->
 		<action name="updateUserMessageAction" class="com.jun.book.servlet.UserAction"
 			method="updateUserMessage">
 			<result type="json"></result>
 		</action>
+		<!-- 获取用户信息的action -->
 		<action name="getUserMessage" class="com.jun.book.servlet.UserAction"
 			method="getUserMessage">
 			<result type="json"></result>
 		</action>
+		<!-- 获取所有的系和专业的action -->
 		<action name="getAllDepartmentAndMajor" class="com.jun.book.servlet.DepartmentAndMajorAction"
 			method="getAllDeaprtmentAndMajor">
 			<result type="json"></result>
 		</action>
+		<!-- 插入系和专业的action（测试使用） -->
 		<action name="insertDepartmentAndMajor" class="com.jun.book.servlet.DepartmentAndMajorAction"
 			method="createDepartmentAndMajor">
 			<result type="json"></result>
 		</action>
+		<!-- 生成测试课程的action -->
 		<action name="createProject" class="com.jun.book.servlet.ProjectAction"
 			method="createProject">
 			<result type="json"></result>
 		</action>
+		<!-- 插入课程action(用户使用的) -->
 		<action name="insertProject" class="com.jun.book.servlet.ProjectAction"
 			method="insertProject">
 			<result type="json"></result>
 		</action>
+		<!-- 查找所有的课程action -->
 		<action name="findAllProject" class="com.jun.book.servlet.ProjectAction"
 			method="findAllProject">
 			<result type="json"></result>
 		</action>
+		<!-- 根据专业id查找课程action -->
 		<action name="findProjectByMajorId" class="com.jun.book.servlet.ProjectAction"
 			method="findProjectByMajorId">
 			<result type="json"></result>
 		</action>
+		<!-- 发布订单action -->
 		<action name="publishOrder" class="com.jun.book.servlet.OrderAction"
 			method="publishOrder">
 			<result type="json"></result>
 		</action>
+		<!-- 获取我的订单action -->
 		<action name="getMyOrder" class="com.jun.book.servlet.OrderAction"
 			method="getMyOrder">
 			<result type="json"></result>
 		</action>
+		<!-- 创建订单action -->
 		<action name="createOrder" class="com.jun.book.servlet.OrderAction"
 			method="createOrder">
 			<result type="json"></result>
 		</action>
+		<!-- 发布订单action -->
 		<action name="setPublishOrderStatus" class="com.jun.book.servlet.OrderAction"
 			method="setPublishOrderStatus">
 			<result type="json"></result>
 		</action>
+		<!-- 根据条件获取订单的action -->
 		<action name="getAllOrderByCondition" class="com.jun.book.servlet.OrderAction"
 			method="getAllOrderByCondition">
 			<result type="json"></result>
 		</action>
+		<!-- 搜索订单action -->
 		<action name="searchOrder" class="com.jun.book.servlet.OrderAction"
 			method="searchOrder">
 			<result type="json"></result>
