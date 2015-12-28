@@ -13,11 +13,13 @@ $(document).ready(function() {
 	.done(function(json){
 		if(json.status === 1){
 			order_data = json.value;
+			console.log(roder_data);
 			var bookNames = order_data.includeBookName.split(',');
 			bookNames.pop();
 			var projectIds = order_data.includeJuniorClass.split(',');
 			projectIds.pop();
 
+			console.log( order_data.includeBookName );
 			showBooks (bookNames,user,projectIds);
 
 			var set = order_data['set'];
