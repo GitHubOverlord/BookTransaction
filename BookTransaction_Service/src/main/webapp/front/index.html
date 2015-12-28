@@ -95,9 +95,20 @@
 						</div><!-- /.col-lg-6 -->
 					</div>
 					<div id="filterForm" class="row none">
+						
 						<div class="col-xs-3">
-							<div class="list-group" id="seniorFilter">
+							<div class="list-group" id="departmentFilter" >
+								<div class="list-group-item list-group-item-info">系</div>
+							</div>
+						</div>
+						<div class="col-xs-3">
+							<div class="list-group" id="majorFilter" >
+							</div>
+						</div>
+						<div class="col-xs-3">
+							<div class="list-group none" id="seniorFilter">
 								<div class="list-group-item list-group-item-info">年级</div>
+								<button type="button" class="list-group-item" data-value="-1">全部</button>
 								<button type="button" class="list-group-item" data-value="1">大一上</button>
 								<button type="button" class="list-group-item" data-value="2">大一下</button>
 								<button type="button" class="list-group-item" data-value="3">大二上</button>
@@ -108,16 +119,6 @@
 								<button type="button" class="list-group-item" data-value="8">大四下</button>
 							</div>
 						</div>
-						<div class="col-xs-3">
-							<div class="list-group none" id="departmentFilter" >
-								<div class="list-group-item list-group-item-info">系</div>
-							</div>
-						</div>
-						<div class="col-xs-3">
-							<div class="list-group" id="majorFilter" >
-							</div>
-						</div>
-						
 						<div class="col-xs-3">
 							<div class="list-group" id="courseFilter">
 								<!-- 
@@ -131,7 +132,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="mt20"></div>
+						<div class="mt20"></div>
 						<div class="row" id="ajax-content">
 							<div class="col-xs-12">
 								<div class="panel panel-default">
@@ -317,6 +318,13 @@
 									</div>
 								</div>
 							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-5"></div>
+							<div class="col-xs-2">
+								<button class="btn btn-info" id="nextPage" >查看更多</button>
+							</div>
+							<div class="col-xs-5"></div>
 						</div>
 					</div>
 				</div>

@@ -205,6 +205,12 @@ $(document).ready(function() {
 				var value = $(this).val();
 				obj[name] = value;
 			});
+			if( $(form).find('tbody').find('tr').size() === 0 ) {
+				// 订单中一本书都没有
+				$('#infoModal').find('.modal-body').html( '请选择至少一本书籍' );
+				$('#infoModal').modal('show');
+				return;
+			}
 			var arr = [];
 			$(form).find('tbody').find('tr').each(function(index, trElem) {
 				var bookRecord = {};
@@ -229,7 +235,7 @@ $(document).ready(function() {
 				$('#infoModal').find('.modal-body').html( '保存并发布成功' );
 				$('#infoModal').modal('show');
 			});
-
+		}
 	});
 	//////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////

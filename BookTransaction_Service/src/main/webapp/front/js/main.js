@@ -84,6 +84,11 @@ jQuery(document).ready(function($) {
 		console.log(a2);
 		console.log(a2);
 	});
+	// 初始显示所有的订单
+	SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action'
+	$('#nextPage').data('SearchURL' , SearchURL);
+	$('#nextPage').data('page', 1);
+	getOrder(URL+ SearchURL +'&offset=0&limit=10');
 // //////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////
 // 筛选
@@ -107,33 +112,53 @@ jQuery(document).ready(function($) {
 	.on('click', 'button', function(e) {
 		$(this).addClass('active').siblings('button').removeClass('active');
 	});
-	// 年级过滤
-	$seniorFilter.on('click', 'button', function(e) {
-		// 展开$courseFilter
-		$departmentFilter.slideDown('fast');
-		if($majorFilter.find('button.active').size() != 0){
-			var majorId = $majorFilter.find('button.active').data('value');
-			var grade = $(this).data('value');
-			filterCourse(majorId,grade);
-		}
-	});
+	
 	// 系过滤
 	$departmentFilter.on('click', 'button', function(e) {
 		var key = $(this).data('value')
 		var major = departmentObject[key];
 		$courseFilter.html('')
-		$majorFilter.html( '<div class="list-group-item list-group-item-info">专业</div>' );
+		
 		$.each(major , function (i , item) {
-			$majorFilter.append('<button type="button" class="list-group-item" data-value="'+item.id+'">'+item.majorName+'</button>')
-		})
+			$majorFilter.append('<button type="button" class="list-group-item" data-value="'+item.id+'">'+item.majorName+'</button>');
+		});
 	});
 	// 专业过滤
 	$majorFilter.on('click', 'button', function(e) {
 		// 根据专业和年级更新课程信息
-		var majorId = $(this).data('value');
-		var grade = $seniorFilter.find('button.active').data('value');
-		filterCourse(majorId,grade);
+		$seniorFilter.slideDown('fast');
+		if($seniorFilter.find('button.active').size() != 0){
+			var majorId = $(this).data('value');
+			var grade = $seniorFilter.find('button.active').data('value');
+			filterCourse(majorId,grade);
+		}
 	});
+	// 年级过滤
+	$seniorFilter.on('click', 'button', function(e) {
+		// 展开$courseFilter
+		// $departmentFilter.slideDown('fast');
+		if($majorFilter.find('button.active').size() != 0){
+			var majorId = $majorFilter.find('button.active').data('value');
+			var grade = $(this).data('value');
+			var SearchURL = '';
+			if( grade === -1 ){
+				SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action?searchMajorValue='
+					+majorId+'&searchJuniorClassValue=-1';
+				$('#nextPage').data('SearchURL' , SearchURL);
+				$('#nextPage').data('page', 1);
+				getOrder(SearchURL + '&offset=0&limit=10');
+				$courseFilter.html('');
+			}
+			else{
+				filterCourse(majorId,grade);
+			}
+		}
+	});
+	/**
+	 * 根据专业和年级更新课程信息
+	 * @param  {string} majorId 专业id
+	 * @param  {string} grade   年级
+	 */
 	function filterCourse(majorId,grade){
 		$courseFilter.html('<div class="list-group-item list-group-item-info">课程</div>');
 		$.ajax({
@@ -144,6 +169,7 @@ jQuery(document).ready(function($) {
 		})
 		.done(function (json) {
 			course = json.value;
+			$courseFilter.append('<button type="button" class="list-group-item" data-value="-1">全部</button>');
 			$.each(course,function (i ,item) {
 				$courseFilter.append('<button type="button" class="list-group-item" data-value="'+item.id+'">'+item.projectName+'</button>');
 			});
@@ -152,6 +178,15 @@ jQuery(document).ready(function($) {
 	// 课程过滤
 	$courseFilter.on('click', 'button', function(e) {
 		// 请求订单数据更新订单列表
+		var majorId = $majorFilter.find('button.active').data('value');
+		var grade = $seniorFilter.find('button.active').data('value');
+		var courseId = $(this).data('value');
+		var SearchURL = '';
+		SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action?searchMajorValue='
+			+majorId+'&searchProjectValue='+courseId+'&searchJuniorClassValue='+grade;
+		$('#nextPage').data('SearchURL' , SearchURL);
+		$('#nextPage').data('page', 1);
+		getOrder(SearchURL+'&offset=0&limit=10');
 	});
 
 	// 展开效果
@@ -172,12 +207,18 @@ jQuery(document).ready(function($) {
 	$('input[name="search"]').on('keydown',function (e) {
 		if (e.which===13) {
 			keyWord = $(this).val();
-			getOrder(URL + '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord);
+			SearchURL = '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord;
+			getOrder(URL + '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord + '&offset=0&limit=10');
+			$('#nextPage').data('SearchURL' , SearchURL);
+			$('#nextPage').data('page', 1);
 		}
 	});
 	$('#searchBtn').on('click',function (e) {
 		keyWord = $('input[name="search"]').val();
-		getOrder(URL + '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord);
+		SearchURL = '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord;
+		getOrder(URL + '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord + '&offset=0&limit=10');
+		$('#nextPage').data('SearchURL' , SearchURL);
+		$('#nextPage').data('page', 1);
 	});
 
 
@@ -421,11 +462,25 @@ jQuery(document).ready(function($) {
 	});//end of
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
+	// 分页
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	$('#nextPage').on('click', function(e) {
+		var SearchURL = $(this).data('SearchURL');
+		var page = $(this).data('page');
+		var from = page * 10;
+		$(this).data('page',page+1);
+		getOrder(URL + SearchURL + '&offset='+from+'&limit=10',true);
+	});
+
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 	// 获取订单信息并解析放入容器中
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
-	getOrder(URL+'/BookTransaction_Service/getAllOrderByCondition.action');
-	function getOrder(url){
+	
+	function getOrder(url,method){
+		var method = method || false;
 		var userInfoHTML = '';
 		var tfootHTML = '';
 		
@@ -451,7 +506,8 @@ jQuery(document).ready(function($) {
 		.done(function (json) {
 			var orderData = json.value;
 			console.log(orderData)
-			$ajaxContent.html('');
+			// 如果method为true则将结果继续往后面叠加，不清空原来的数据
+			if(!method) $ajaxContent.html('');
 			if(orderData.length === 0) 
 			{
 				$ajaxContent.html('<span class="text-danger">没有搜索到相关书籍</span>');
