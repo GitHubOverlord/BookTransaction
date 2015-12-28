@@ -88,7 +88,7 @@ jQuery(document).ready(function($) {
 	SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action'
 	$('#nextPage').data('SearchURL' , SearchURL);
 	$('#nextPage').data('page', 1);
-	getOrder(URL+ SearchURL +'&offset=0&limit=10');
+	getOrder(URL+ SearchURL +'?offset=0&limit=10');
 // //////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////
 // 筛选
