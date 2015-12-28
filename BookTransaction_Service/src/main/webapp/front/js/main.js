@@ -148,11 +148,27 @@ jQuery(document).ready(function($) {
 				$('#nextPage').data('page', 1);
 				getOrder(SearchURL + '&offset=0&limit=10');
 				$courseFilter.html('');
+				$('#filterForm').slideUp();
 			}
 			else{
 				filterCourse(majorId,grade);
 			}
 		}
+	});
+	
+	// 课程过滤
+	$courseFilter.on('click', 'button', function(e) {
+		// 请求订单数据更新订单列表
+		var majorId = $majorFilter.find('button.active').data('value');
+		var grade = $seniorFilter.find('button.active').data('value');
+		var courseId = $(this).data('value');
+		var SearchURL = '';
+		SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action?searchMajorValue='
+			+majorId+'&searchProjectValue='+courseId+'&searchJuniorClassValue='+grade;
+		$('#nextPage').data('SearchURL' , SearchURL);
+		$('#nextPage').data('page', 1);
+		getOrder(SearchURL+'&offset=0&limit=10');
+		$('#filterForm').slideUp();
 	});
 	/**
 	 * 根据专业和年级更新课程信息
@@ -175,20 +191,6 @@ jQuery(document).ready(function($) {
 			});
 		});
 	}
-	// 课程过滤
-	$courseFilter.on('click', 'button', function(e) {
-		// 请求订单数据更新订单列表
-		var majorId = $majorFilter.find('button.active').data('value');
-		var grade = $seniorFilter.find('button.active').data('value');
-		var courseId = $(this).data('value');
-		var SearchURL = '';
-		SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action?searchMajorValue='
-			+majorId+'&searchProjectValue='+courseId+'&searchJuniorClassValue='+grade;
-		$('#nextPage').data('SearchURL' , SearchURL);
-		$('#nextPage').data('page', 1);
-		getOrder(SearchURL+'&offset=0&limit=10');
-	});
-
 	// 展开效果
 	var $ajaxContent = $('#ajax-content');
 	$ajaxContent.on('click', '.expand-btn', function(e) {
