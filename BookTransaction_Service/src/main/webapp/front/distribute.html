@@ -7,16 +7,48 @@
 		<link rel="stylesheet" href="css/main.css" />
 	</head>
 	<body>
-
+			<header>
+				<div class="mt50"></div>
+				<nav class="navbar navbar-default navbar-fixed-top">
+		      <div class="container">
+		        <div class="navbar-header">
+		          <a class="navbar-brand" href="index.html"><img src="" alt="" />logo</a>
+		        </div>
+		        <div id="navbar" class="navbar-collapse collapse">
+		          <ul class="nav navbar-nav navbar-right">
+		            <li class="login"><a href="javascript:;" id="navLoginBtn">登陆</a></li>
+		            <li class="regist"><a href="javascript:;" id="navRegistBtn">注册</a></li>
+		            <li class="userName" style="display:none;">
+		            	<a href="javascript:;" class="text-info" id="navModifyBtn">
+		            		修改个人信息
+		            	</a>
+		            </li>
+		            <li class="releaseBook" style="display:none;"><a href="distribute.html" id="navAddBookBtn">发布图书</a></li>
+		            <li class="loginOut text-danger" style="display:none"><a href="#" class="text-danger">退出登录</a></li>
+		          </ul>
+		        </div><!--/.nav-collapse -->
+		      </div>
+		    </nav>
+		  </header>
+		  <div class="container mt80">
+		  	<hr />
+		  	<div class="row">
+		  		<div class="col-xs-12">
+		  			<h4>使用说明</h4>
+		  			<ol>
+				  		<li>点击 <kbd>添加书籍</kbd> 按钮来添加您打算要售卖的课程书籍</li>
+				  		<li>只有进行 <kbd>保存并发布</kbd> 时您的信息才会显示到主界面</li>
+				  		<li>当您点击 <kbd>撤销发布</kbd> 时您选择的书籍信息将不会被搜索到</li>
+				  	</ol>
+		  		</div>
+		  	</div>
+		  	<hr />
+		  </div>
 			<div class="container">
+		  	
 				<div class="row">
-					<div class="col-xs-2">
-						<button class="btn btn-default btn-block" data-toggle="modal" data-target="#addModal">添加书籍</button>
-					</div>
-					<div class="col-xs-2">
-						<button class="btn btn-danger btn-block" id="deleteBtn">删除书籍</button>
-					</div>
-					<div class="col-xs-4"></div>
+					
+					<div class="col-xs-8"></div>
 					<div class="col-xs-2">
 						<button class="btn btn-success btn-block" id="sent">保存并发布</button>
 					</div>
@@ -66,6 +98,15 @@
 						</form>
 					</div> <!-- end of col-xs-12 -->
 				</div><!-- end of row -->
+				<div class="row">
+					<div class="col-xs-8"></div>
+					<div class="col-xs-2">
+						<button class="btn btn-info btn-block" data-toggle="modal" data-target="#addModal">添加书籍</button>
+					</div>
+					<div class="col-xs-2">
+						<button class="btn btn-danger btn-block" id="deleteBtn">删除书籍</button>
+					</div>
+				</div>
 			</div><!-- end of container -->
 
 		<!-- Button trigger modal -->
@@ -113,7 +154,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- Button trigger modal -->
 		<!-- Modal -->
 		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
@@ -128,12 +168,25 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary">确定</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script type="text/javascript" src="js/jquery/jquery-2.1.0.min.js"></script>
 		<script type="text/javascript" src="js/cookie/jquery.cookie.js"></script>
 		<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/validation/jquery.validate.js"></script>
 		<script type="text/javascript" src="js/validation/additional-methods.min.js"></script>
 		<script type="text/javascript" src="js/validation/messages_zh.min.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/destribute.js"></script>
 
 	</body>

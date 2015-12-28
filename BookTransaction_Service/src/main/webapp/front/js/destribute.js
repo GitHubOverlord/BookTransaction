@@ -226,11 +226,9 @@ $(document).ready(function() {
 			})
 			.done(function(json){
 				console.log( JSON.stringify(json) );
-			})
-			.always(function(){
-				alert('ok');
+				$('#infoModal').find('.modal-body').html( '保存并发布成功' );
+				$('#infoModal').modal('show');
 			});
-		}
 
 	});
 	//////////////////////////////////////////////////////////////////////////////////
@@ -251,10 +249,11 @@ $(document).ready(function() {
 	$('#cheXiaoBtn').on('click',function (e) {
 		var url = '/BookTransaction_Service/setPublishOrderStatus.action?publishStatus=true';
 		$.get(url).done(function (data) {
-			console.log(data);
-			if( data.status === 1 ){
-				alert('撤销成功');
+			console.log( data );
+			if( data['status'] == 1 ){
+				$('#infoModal').find('.modal-body').html( '撤销发布成功' );
+				$('#infoModal').modal('show');
 			}
-		})
-	})
+		});
+	});
 });
