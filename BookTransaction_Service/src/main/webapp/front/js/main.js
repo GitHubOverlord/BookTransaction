@@ -273,11 +273,14 @@ jQuery(document).ready(function($) {
 			$(form).find('[name]').each(function(i,item) {
 				var key = $(this).attr('name');
 				var val = $(this).val();
-				if( key === 'psw' ) 
+				if( key === 'psw' ) {
 					ajaxData[key] = hex_md5(val);
-				else
+				}
+				else {
 					ajaxData[key] = val;
+				}
 			});
+			ajaxData.majorName = $(form).find('[name="majorId"]').find('option:selected').text();
 			$.post(URL+'/BookTransaction_Service/registerAction',ajaxData,function (json) {
 				json = $.parseJSON(json);
 				var user = json.value;
