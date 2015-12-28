@@ -482,7 +482,7 @@ jQuery(document).ready(function($) {
 			$(this).attr('disabled','disabled');
 			return;
 		}
-		var from = parseInt( page / 10);
+		var from = parseInt( page / 10) * 10;
 		if( reg.test(SearchURL) ) {
 			getOrder(URL + SearchURL + '&offset='+from+'&limit=10',true);
 		}
