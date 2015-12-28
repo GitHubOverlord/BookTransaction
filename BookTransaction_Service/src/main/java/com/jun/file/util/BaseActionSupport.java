@@ -28,17 +28,17 @@ public class BaseActionSupport extends ActionSupport implements
 
 	public void setServletResponse(HttpServletResponse response) {
 		this.response = response;
-		try {
-			request.setCharacterEncoding("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 	}
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
-
+		try {
+			this.request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
 	}
 }

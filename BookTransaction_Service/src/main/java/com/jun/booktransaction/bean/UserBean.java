@@ -42,7 +42,7 @@ public class UserBean implements Serializable {
 	/**
 	 * 专业
 	 */
-	private String major;
+	private String majorId;
 	public static String ATTR_MAJOR = "major";
 	/**
 	 * 年级
@@ -109,13 +109,13 @@ public class UserBean implements Serializable {
 		this.registerDate = registerDate;
 	}
 
-	@Column(name = "major")
-	public String getMajor() {
-		return major;
+	@Column(name = "majorId")
+	public String getMajorId() {
+		return majorId;
 	}
 
-	public void setMajor(String major) {
-		this.major = major;
+	public void setMajorId(String majorId) {
+		this.majorId = majorId;
 	}
 
 	@Column(name = "grade")

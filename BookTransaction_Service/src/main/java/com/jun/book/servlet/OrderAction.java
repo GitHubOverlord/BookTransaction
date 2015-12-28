@@ -174,31 +174,34 @@ public class OrderAction extends BaseActionSupport {
 					orderDao.delete(orderBean2.getId());
 				}
 			}
-			System.out.println(orderItemBeans);
-			OrderBean orderBean = new OrderBean();
-			orderBean.setBelongUserName(userBean.getUserName());
-			orderBean.setContactPhone(orderContactPhone);
-			orderBean.setContactQQ(orderContactQQ);
-			orderBean.setCreateDate(new Date().getTime());
-			orderBean.setOrderDescribe(orderDescribe);
-			orderBean.setBelongUserMajorName(userBean.getMajor());
-			orderBean.setPublishStatus(true);
 			List<OrderItemBean> jsonOrderItemBeans = new ArrayList<OrderItemBean>();
-			System.err.println("===============json 开始解析=====================");
+			System.out.println(orderItemBeans);
 			try {
 				Gson gson = new Gson();
 				jsonOrderItemBeans = gson.fromJson(orderItemBeans,
 						new TypeToken<List<OrderItemBean>>() {
 						}.getType());
-				orderBean
-						.setSet(new HashSet<OrderItemBean>(jsonOrderItemBeans));
+
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
+			if (jsonOrderItemBeans == null || jsonOrderItemBeans.size() == 0) {// 这里我们判断解析的图书条数是否为空或者为0，如果为空，我们就放弃保存。
+				PrintObjectToJson.print(response, status, remind, "");
+				return;
+			}
 
-			System.err.println("===============json 解析完成=====================");
-			System.err.println("===============" + orderBean.getSet().size()
-					+ "=====================");
+			OrderBean orderBean = new OrderBean();
+			orderBean.setSet(new HashSet<OrderItemBean>(jsonOrderItemBeans));
+			orderBean.setBelongUserName(userBean.getUserName());
+			orderBean.setContactPhone(orderContactPhone);
+			orderBean.setContactQQ(orderContactQQ);
+			orderBean.setCreateDate(new Date().getTime());
+			orderBean.setOrderDescribe(orderDescribe);
+			orderBean.setBelongUserMajorName(userBean.getMajorName());
+			orderBean.setBelongUserMajorId(userBean.getMajorId());
+			orderBean.setPublishStatus(true);
+			orderBean.setBelongUserJunirClass(userBean.getGrade());
+			orderBean.setBelongUserNickName(userBean.getNickName());
 			String includeBookName = "";
 			String includeJuniorClass = "";
 			for (OrderItemBean orderItemBean : jsonOrderItemBeans) {
@@ -212,6 +215,7 @@ public class OrderAction extends BaseActionSupport {
 			orderBean.setOrderItemSize(jsonOrderItemBeans == null ? 0
 					: jsonOrderItemBeans.size());
 			orderDao.save(orderBean);// 填充订单
+
 		}
 		PrintObjectToJson.print(response, status, remind, "");
 	}
@@ -284,12 +288,13 @@ public class OrderAction extends BaseActionSupport {
 			orderBeans = orderDao.findList(map);
 
 		}
-		if (orderBeans != null || orderBeans.size() >0) {
-			PrintObjectToJson.print(response, status, remind, orderBeans.get(0));
-		}else {
+		if (orderBeans != null && orderBeans.size() > 0) {
+			PrintObjectToJson
+					.print(response, status, remind, orderBeans.get(0));
+		} else {
 			PrintObjectToJson.print(response, status, remind, new OrderBean());
 		}
-		
+
 	}
 
 	/**
@@ -297,29 +302,39 @@ public class OrderAction extends BaseActionSupport {
 	 */
 	public void getAllOrderByCondition() {
 		String hql = "select orders from OrderBean as orders where orders.publishStatus=true and orders.orderItemSize>0";
-		System.out.println("================"+searchMajorValue+"=============");
-		if (searchMajorValue== null || searchMajorValue.equals("-1") || searchMajorValue.equals("")) {//搜索的专业,如果为-1或者为空，就表示返回所有的值
-			
-		}else {//表示筛选年级和课程
-			hql = hql+" and orders.belongUserMajorName like '%"+searchMajorValue+"%'";
-			if (searchJuniorClassValue != null && !searchJuniorClassValue.equals("-1") && !searchJuniorClassValue.equals("")) {//搜索的年级,-1表示搜索所有的值,不等于-1则表示需要添加限定条件
-				hql = hql+" and orders.includeJuniorClass like '%"+searchJuniorClassValue+"%'";
-				if (searchProjectValue!=null && !searchProjectValue.equals("-1") && !searchProjectValue.equals("")) {//搜索的课程，01表示搜索所有的值，不等于-1表示需要添加限定条件
-					hql = hql+ " and orders.includeBookName like '%"+searchProjectValue+"%'";
+		System.out.println("================" + searchMajorValue
+				+ "=============");
+		if (searchMajorValue == null || searchMajorValue.equals("-1")
+				|| searchMajorValue.equals("")) {// 搜索的专业,如果为-1或者为空，就表示返回所有的值
+
+		} else {// 表示筛选年级和课程
+			hql = hql + " and orders.belongUserMajorName like '%"
+					+ searchMajorValue + "%'";
+			if (searchJuniorClassValue != null
+					&& !searchJuniorClassValue.equals("-1")
+					&& !searchJuniorClassValue.equals("")) {// 搜索的年级,-1表示搜索所有的值,不等于-1则表示需要添加限定条件
+				hql = hql + " and orders.includeJuniorClass like '%"
+						+ searchJuniorClassValue + "%'";
+				if (searchProjectValue != null
+						&& !searchProjectValue.equals("-1")
+						&& !searchProjectValue.equals("")) {// 搜索的课程，01表示搜索所有的值，不等于-1表示需要添加限定条件
+					hql = hql + " and orders.includeBookName like '%"
+							+ searchProjectValue + "%'";
 				}
 			}
 		}
-		Session session= HibernateUtil.getSession();
+		Session session = HibernateUtil.getSession();
 		Query query = session.createQuery(hql);
 		query.setFirstResult(offset);
-		query.setMaxResults(offset+limit);
+		query.setMaxResults(offset + limit);
 		@SuppressWarnings("unchecked")
 		List<OrderBean> orderBeans = query.list();
 		int status = 1;
 		remind = "获取数据成功";
 		PrintObjectToJson.print(response, status, remind, orderBeans);
-		System.out.println("----------------"+query.toString()+"--------------------");
-		System.out.println("----------------"+hql+"--------------------");
+		System.out.println("----------------" + query.toString()
+				+ "--------------------");
+		System.out.println("----------------" + hql + "--------------------");
 	}
 
 	/**
@@ -330,6 +345,8 @@ public class OrderAction extends BaseActionSupport {
 		Session session = HibernateUtil.getSession();
 		Query query = session.createQuery(sql);
 		query.setString(0, "%" + searchKey + "%");
+		query.setFirstResult(offset);
+		query.setMaxResults(limit + offset);
 		@SuppressWarnings("unchecked")
 		List<OrderBean> orderBeans = query.list();
 		PrintObjectToJson.print(response, 1, remind, orderBeans == null ? ""
