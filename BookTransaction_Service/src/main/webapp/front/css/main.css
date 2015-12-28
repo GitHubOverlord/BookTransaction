@@ -73,3 +73,7 @@ footer{
 .errorMessage{
 	padding:15px;
 }
+
+#ajax-content{
+	min-height: 500px;
+}

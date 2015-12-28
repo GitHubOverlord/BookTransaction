@@ -8,6 +8,7 @@
 	  	return false;
 	}, "和原来的密码不一样");
 })(jQuery);
+var URL = 'http://192.168.1.108:8080';
 // 日期格式化工具
 Date.prototype.format = function (fmt) { //author: meizz 
   var o = {
@@ -37,7 +38,7 @@ jQuery(document).ready(function($) {
 	{
 		var user = $.parseJSON( $.cookie('user') );
 		$.ajax({
-    	url:"http://192.168.1.108:8080/BookTransaction_Service/loginAction"
+    	url:URL+"/BookTransaction_Service/loginAction"
     	,type : 'post'
     	,data:{ userName: user.userName ,psw : user.psw }
     	,dataType:'json'
@@ -59,7 +60,7 @@ jQuery(document).ready(function($) {
 	$('.carousel').carousel();
 	// 获取所有的系和专业
 	$.ajax({
-		url: 'http://192.168.1.108:8080/BookTransaction_Service/getAllDepartmentAndMajor',
+		url: URL+'/BookTransaction_Service/getAllDepartmentAndMajor',
 		async: false,
 		dataType:'json'
 	})
@@ -135,7 +136,7 @@ jQuery(document).ready(function($) {
 	function filterCourse(majorId,grade){
 		$courseFilter.html('<div class="list-group-item list-group-item-info">课程</div>');
 		$.ajax({
-			url:'http://192.168.1.108:8080/BookTransaction_Service/findProjectByMajorId',
+			url:URL+'/BookTransaction_Service/findProjectByMajorId',
 			data:{"majorId":majorId,"belongJuniorCalss":grade},
 			dataType:'json',
 			async:false
@@ -161,6 +162,25 @@ jQuery(document).ready(function($) {
 		$(this).find('span').toggleClass('glyphicon-triangle-bottom')
 		.toggleClass('glyphicon-triangle-top');
 	});
+
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+// 搜索
+// //////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////
+	$('input[name="search"]').on('keydown',function (e) {
+		if (e.which===13) {
+			keyWord = $(this).val();
+			getOrder(URL + '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord);
+		}
+	});
+	$('#searchBtn').on('click',function (e) {
+		keyWord = $('input[name="search"]').val();
+		getOrder(URL + '/BookTransaction_Service/searchOrder.action?searchKey=' + keyWord);
+	});
+
+
+
 // //////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////
 // 注册
@@ -211,7 +231,7 @@ jQuery(document).ready(function($) {
 				else
 					ajaxData[key] = val;
 			});
-			$.post('http://192.168.1.108:8080/BookTransaction_Service/registerAction',ajaxData,function (json) {
+			$.post(URL+'/BookTransaction_Service/registerAction',ajaxData,function (json) {
 				json = $.parseJSON(json);
 				var user = json.value;
 				var registError = $(form).find('.registError');
@@ -267,7 +287,7 @@ jQuery(document).ready(function($) {
 			var psw = hex_md5 ( $(form).find('[name="passWord"]').val() );
 			var loginError = $(form).find('.loginError');
 		    $.ajax({
-		    	url:"http://192.168.1.108:8080/BookTransaction_Service/loginAction"
+		    	url:URL+"/BookTransaction_Service/loginAction"
 		    	,type : 'post'
 		    	,data:{ userName: userName ,psw : psw }
 		    	,dataType:'json'
@@ -323,7 +343,7 @@ jQuery(document).ready(function($) {
   	$('.login,.regist').show();
 		$('.userName,.releaseBook,.loginOut').hide();
 		$.cookie('user','',{expires:-1});
-		$.get('http://192.168.1.108:8080/BookTransaction_Service/loginOutAction');
+		$.get(URL+'/BookTransaction_Service/loginOutAction');
   }
 // //////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////
@@ -382,7 +402,7 @@ jQuery(document).ready(function($) {
 					ajaxData[key] = val;
 			});
 			$.ajax({
-				url: 'http://192.168.1.108:8080/BookTransaction_Service/updateUserMessageAction',
+				url: URL+'/BookTransaction_Service/updateUserMessageAction',
 				type: 'post',
 				dataType: 'json',
 				data: ajaxData,
@@ -403,7 +423,7 @@ jQuery(document).ready(function($) {
 	// 获取订单信息并解析放入容器中
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
-	getOrder('http://192.168.1.108:8080/BookTransaction_Service/getAllOrderByCondition.action');
+	getOrder(URL+'/BookTransaction_Service/getAllOrderByCondition.action');
 	function getOrder(url){
 		var userInfoHTML = '';
 		var tfootHTML = '';
@@ -431,7 +451,19 @@ jQuery(document).ready(function($) {
 			var orderData = json.value;
 			console.log(orderData)
 			$ajaxContent.html('');
+			if(orderData.length === 0) 
+			{
+				$ajaxContent.html('<span class="text-danger">没有搜索到相关书籍</span>');
+				return;
+			}
 			$.each(orderData, function(i,item) {
+				var userInfoHTML = '';
+				var tfootHTML = '';
+				
+				var labelHTML = '';
+				var tbodyHTML = '';
+
+				var orderHTML = '';
 				var order = item;
 				userInfoHTML = [
 					'<div class="panel-heading">',
@@ -468,7 +500,7 @@ jQuery(document).ready(function($) {
 				$.each(order.set ,function (i,book) {
 					tbodyHTML += '<tr> ' 
 					tbodyHTML += '<td> ' + book.bookName + ' </td>';
-					tbodyHTML += '<td> ' + book.oldDegree + ' </td>';
+					tbodyHTML += '<td> ' + book.oldDegree + '% </td>';
 					tbodyHTML += '<td> ' + book.haveExerciseBook + ' </td>';
 					tbodyHTML += '<td> ' + book.price + ' </td>';
 					tbodyHTML += '<td> ' + book.describle + ' </td>';
