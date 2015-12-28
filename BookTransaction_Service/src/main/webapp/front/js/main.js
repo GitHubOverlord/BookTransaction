@@ -471,11 +471,24 @@ jQuery(document).ready(function($) {
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
 	$('#nextPage').on('click', function(e) {
+		var reg = /\?/;
 		var SearchURL = $(this).data('SearchURL');
-		var page = $(this).data('page');
-		var from = page * 10;
-		$(this).data('page',page+1);
-		getOrder(URL + SearchURL + '&offset='+from+'&limit=10',true);
+		// var page = $(this).data('page');
+		var page = $('#ajax-content').find('.col-xs-12').size();
+		// 没有更多的数据了
+		// $(this).data('page',page+1);
+		if(page % 10 !== 0) {
+			$(this).text('没有更多了');
+			$(this).attr('disabled','disabled');
+			return;
+		}
+		var from = parseInt( page / 10);
+		if( reg.test(SearchURL) ) {
+			getOrder(URL + SearchURL + '&offset='+from+'&limit=10',true);
+		}
+		else{
+			getOrder(URL + SearchURL + '?offset='+from+'&limit=10',true);
+		}
 	});
 
 	////////////////////////////////////////////////////////////////////////////
