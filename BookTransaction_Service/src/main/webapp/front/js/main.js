@@ -140,6 +140,7 @@ jQuery(document).ready(function($) {
 		// $departmentFilter.slideDown('fast');
 		if($majorFilter.find('button.active').size() != 0){
 			var majorName = $majorFilter.find('button.active').html();
+			var majorId = $majorFilter.find('button.active').data('value');
 			var grade = $(this).data('value');
 			var SearchURL = '';
 			if( grade === -1 ){
