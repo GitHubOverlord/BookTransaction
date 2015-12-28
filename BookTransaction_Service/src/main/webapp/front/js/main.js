@@ -121,7 +121,7 @@ jQuery(document).ready(function($) {
 		
 		$.each(major , function (i , item) {
 			// 订单筛选时候使用的是专业名称而不是专业id
-			$majorFilter.append('<button type="button" class="list-group-item" data-value="'+item.majorName+'">'+item.majorName+'</button>');
+			$majorFilter.append('<button type="button" class="list-group-item" data-value="'+item.id+'">'+item.majorName+'</button>');
 		});
 	});
 	// 专业过滤
@@ -139,12 +139,12 @@ jQuery(document).ready(function($) {
 		// 展开$courseFilter
 		// $departmentFilter.slideDown('fast');
 		if($majorFilter.find('button.active').size() != 0){
-			var majorId = $majorFilter.find('button.active').data('value');
+			var majorName = $majorFilter.find('button.active').html();
 			var grade = $(this).data('value');
 			var SearchURL = '';
 			if( grade === -1 ){
 				SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action?searchMajorValue='
-					+majorId+'&searchJuniorClassValue=-1';
+					+majorName+'&searchJuniorClassValue=-1';
 				$('#nextPage').data('SearchURL' , SearchURL);
 				$('#nextPage').data('page', 1);
 				getOrder(SearchURL + '&offset=0&limit=10');
@@ -160,12 +160,12 @@ jQuery(document).ready(function($) {
 	// 课程过滤
 	$courseFilter.on('click', 'button', function(e) {
 		// 请求订单数据更新订单列表
-		var majorId = $majorFilter.find('button.active').data('value');
+		var majorName = $majorFilter.find('button.active').html();
 		var grade = $seniorFilter.find('button.active').data('value');
 		var courseId = $(this).data('value');
 		var SearchURL = '';
 		SearchURL = '/BookTransaction_Service/getAllOrderByCondition.action?searchMajorValue='
-			+majorId+'&searchProjectValue='+courseId+'&searchJuniorClassValue='+grade;
+			+majorName+'&searchProjectValue='+courseId+'&searchJuniorClassValue='+grade;
 		$('#nextPage').data('SearchURL' , SearchURL);
 		$('#nextPage').data('page', 1);
 		getOrder(SearchURL+'&offset=0&limit=10');
