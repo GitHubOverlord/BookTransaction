@@ -57,6 +57,7 @@ public class OrderBean {
 	 * 所属人的专业
 	 */
 	private String belongUserMajorName;
+	private String belongUserMajorId;
 	public static final String ATTR_BELONG_USER_MAJOR_NAME = "belongUserMajorName";
 	/**
 	 * 有哪几个年级的书
@@ -202,6 +203,15 @@ public class OrderBean {
 
 	public void setOrderItemSize(int orderItemSize) {
 		this.orderItemSize = orderItemSize;
+	}
+
+	@Column(name = "belongUserMajorId")
+	public String getBelongUserMajorId() {
+		return belongUserMajorId;
+	}
+
+	public void setBelongUserMajorId(String belongUserMajorId) {
+		this.belongUserMajorId = belongUserMajorId;
 	}
 
 }

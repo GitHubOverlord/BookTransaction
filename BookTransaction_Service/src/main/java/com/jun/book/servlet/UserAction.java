@@ -22,6 +22,7 @@ public class UserAction extends BaseActionSupport {
 	private String majorId;// 专业ID
 	private String nickName;// 昵称
 	private String grade;
+	private String majorName;//专业名字
 
 	public String getRemind() {
 		return remind;
@@ -138,11 +139,12 @@ public class UserAction extends BaseActionSupport {
 			userBean.setGrade(grade);
 			userBean.setIsUseAble(true);
 			userBean.setIsVip(0);
-			userBean.setMajor(majorId);
+			userBean.setMajorId(majorId);
 			userBean.setNickName(nickName);
 			userBean.setPsw(psw);
 			userBean.setRegisterDate(new Date().getTime());
 			userBean.setUserName(userName);
+			userBean.setMajorName(majorName);
 			userDao.save(userBean);
 			remind = "注册成功";
 			SessionUtils.putSession(userBean);
@@ -201,6 +203,14 @@ public class UserAction extends BaseActionSupport {
 			remind = "登录成功";
 		}
 		PrintObjectToJson.print(response, status, remind, userBean == null ?"":userBean);
+	}
+
+	public String getMajorName() {
+		return majorName;
+	}
+
+	public void setMajorName(String majorName) {
+		this.majorName = majorName;
 	}
 
 }
