@@ -57,7 +57,7 @@ $(document).ready(function() {
 	$('#grade').on('click', 'a', function() {
 		$(this).toggleClass('active').siblings('a').removeClass('active');
 		var grade = $(this).data('value');
-		console.log(user.major)
+		console.log(user.majorId)
 		$.getJSON(URL+'/BookTransaction_Service/findProjectByMajorId.action', 
 			{majorId:user.major,belongJuniorCalss:grade}, 
 			function(json, textStatus) {
