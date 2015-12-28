@@ -72,6 +72,7 @@ public class OrderBean {
 	private String belongUserNickName;
 	private String belongUserJunirClass;
 	private Set<OrderItemBean> set;
+	private int orderItemSize;
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -192,6 +193,15 @@ public class OrderBean {
 
 	public void setBelongUserJunirClass(String belongUserJunirClass) {
 		this.belongUserJunirClass = belongUserJunirClass;
+	}
+
+	@Column(name = "orderItemSize")
+	public int getOrderItemSize() {
+		return orderItemSize;
+	}
+
+	public void setOrderItemSize(int orderItemSize) {
+		this.orderItemSize = orderItemSize;
 	}
 
 }
