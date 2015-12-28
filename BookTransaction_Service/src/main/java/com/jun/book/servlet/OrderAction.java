@@ -149,7 +149,7 @@ public class OrderAction extends BaseActionSupport {
 	}
 
 	/**
-	 * 发布订单
+	 * 发布订单,status为1表示发布成功，status为2表示发布失败
 	 */
 	public void publishOrder() {
 		int status = 0;
@@ -158,6 +158,7 @@ public class OrderAction extends BaseActionSupport {
 			status = 2;
 			remind = "您未登录";
 		} else {// 登录了,先删除订单信息，再添加订单信息
+			status = 1;
 			OrderDao orderDao = new OrderDao();
 			OrderItemDao orderItemDao = new OrderItemDao();
 			HashMap<String, Object> orderMap = new HashMap<String, Object>();
@@ -181,6 +182,7 @@ public class OrderAction extends BaseActionSupport {
 			orderBean.setCreateDate(new Date().getTime());
 			orderBean.setOrderDescribe(orderDescribe);
 			orderBean.setBelongUserMajorName(userBean.getMajor());
+			orderBean.setPublishStatus(true);
 			List<OrderItemBean> jsonOrderItemBeans = new ArrayList<OrderItemBean>();
 			System.err.println("===============json 开始解析=====================");
 			try {
@@ -188,13 +190,15 @@ public class OrderAction extends BaseActionSupport {
 				jsonOrderItemBeans = gson.fromJson(orderItemBeans,
 						new TypeToken<List<OrderItemBean>>() {
 						}.getType());
-				orderBean.setSet(new HashSet<OrderItemBean>(jsonOrderItemBeans));
+				orderBean
+						.setSet(new HashSet<OrderItemBean>(jsonOrderItemBeans));
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
-			
+
 			System.err.println("===============json 解析完成=====================");
-			System.err.println("==============="+orderBean.getSet().size()+"=====================");
+			System.err.println("===============" + orderBean.getSet().size()
+					+ "=====================");
 			String includeBookName = "";
 			String includeJuniorClass = "";
 			for (OrderItemBean orderItemBean : jsonOrderItemBeans) {
@@ -205,6 +209,8 @@ public class OrderAction extends BaseActionSupport {
 			}
 			orderBean.setIncludeBookName(includeBookName);
 			orderBean.setIncludeJuniorClass(includeJuniorClass);
+			orderBean.setOrderItemSize(jsonOrderItemBeans == null ? 0
+					: jsonOrderItemBeans.size());
 			orderDao.save(orderBean);// 填充订单
 		}
 		PrintObjectToJson.print(response, status, remind, "");
@@ -278,27 +284,49 @@ public class OrderAction extends BaseActionSupport {
 			orderBeans = orderDao.findList(map);
 
 		}
-		PrintObjectToJson.print(response, status, remind, orderBeans);
+		if (orderBeans != null || orderBeans.size() >0) {
+			PrintObjectToJson.print(response, status, remind, orderBeans.get(0));
+		}else {
+			PrintObjectToJson.print(response, status, remind, new OrderBean());
+		}
+		
 	}
 
 	/**
 	 * 根据条件获取订单,如果需要这个条件的全部，那么就 不添加這個搜索條件
 	 */
 	public void getAllOrderByCondition() {
-		String hql = "select orders from OrderBean as orders where order";
-		OrderDao orderDao = new OrderDao();
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
-		List<OrderBean> orderBeans = orderDao.findList(hashMap, offset, limit);
+		String hql = "select orders from OrderBean as orders where orders.publishStatus=true and orders.orderItemSize>0";
+		System.out.println("================"+searchMajorValue+"=============");
+		if (searchMajorValue== null || searchMajorValue.equals("-1") || searchMajorValue.equals("")) {//搜索的专业,如果为-1或者为空，就表示返回所有的值
+			
+		}else {//表示筛选年级和课程
+			hql = hql+" and orders.belongUserMajorName like '%"+searchMajorValue+"%'";
+			if (searchJuniorClassValue != null && !searchJuniorClassValue.equals("-1") && !searchJuniorClassValue.equals("")) {//搜索的年级,-1表示搜索所有的值,不等于-1则表示需要添加限定条件
+				hql = hql+" and orders.includeJuniorClass like '%"+searchJuniorClassValue+"%'";
+				if (searchProjectValue!=null && !searchProjectValue.equals("-1") && !searchProjectValue.equals("")) {//搜索的课程，01表示搜索所有的值，不等于-1表示需要添加限定条件
+					hql = hql+ " and orders.includeBookName like '%"+searchProjectValue+"%'";
+				}
+			}
+		}
+		Session session= HibernateUtil.getSession();
+		Query query = session.createQuery(hql);
+		query.setFirstResult(offset);
+		query.setMaxResults(offset+limit);
+		@SuppressWarnings("unchecked")
+		List<OrderBean> orderBeans = query.list();
 		int status = 1;
 		remind = "获取数据成功";
 		PrintObjectToJson.print(response, status, remind, orderBeans);
+		System.out.println("----------------"+query.toString()+"--------------------");
+		System.out.println("----------------"+hql+"--------------------");
 	}
 
 	/**
 	 * 搜索订单
 	 */
 	public void searchOrder() {
-		String sql = "select orders from OrderBean as orders where orders.includeBookName like ?";
+		String sql = "select orders from OrderBean as orders where orders.publishStatus=true and orders.orderItemSize>0 and orders.includeBookName like ?";
 		Session session = HibernateUtil.getSession();
 		Query query = session.createQuery(sql);
 		query.setString(0, "%" + searchKey + "%");
@@ -306,6 +334,7 @@ public class OrderAction extends BaseActionSupport {
 		List<OrderBean> orderBeans = query.list();
 		PrintObjectToJson.print(response, 1, remind, orderBeans == null ? ""
 				: orderBeans);
+		System.out.println(query.toString());
 	}
 
 	public void setPublishOrderStatus() {
@@ -319,7 +348,7 @@ public class OrderAction extends BaseActionSupport {
 			System.out.println(userBean.getUserName());
 			System.out.println(publishStatus);
 			HashMap<String, Object> where = new HashMap<String, Object>();
-			where.put(OrderBean.ATTR_PUBLISH_STATUS, true);
+			where.put(OrderBean.ATTR_PUBLISH_STATUS, false);
 			where.put(OrderBean.ATTR_BELONG_USER_NAME, userBean.getUserName());
 			HashMap<String, Object> fiedls = new HashMap<String, Object>();
 			fiedls.put(OrderBean.ATTR_PUBLISH_STATUS, publishStatus);
