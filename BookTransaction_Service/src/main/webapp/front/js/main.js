@@ -120,7 +120,8 @@ jQuery(document).ready(function($) {
 		$courseFilter.html('')
 		
 		$.each(major , function (i , item) {
-			$majorFilter.append('<button type="button" class="list-group-item" data-value="'+item.id+'">'+item.majorName+'</button>');
+			// 订单筛选时候使用的是专业名称而不是专业id
+			$majorFilter.append('<button type="button" class="list-group-item" data-value="'+item.majorName+'">'+item.majorName+'</button>');
 		});
 	});
 	// 专业过滤
@@ -187,7 +188,8 @@ jQuery(document).ready(function($) {
 			course = json.value;
 			$courseFilter.append('<button type="button" class="list-group-item" data-value="-1">全部</button>');
 			$.each(course,function (i ,item) {
-				$courseFilter.append('<button type="button" class="list-group-item" data-value="'+item.id+'">'+item.projectName+'</button>');
+				// 请求订单时候是课程名而不是id
+				$courseFilter.append('<button type="button" class="list-group-item" data-value="'+item.projectName+'">'+item.projectName+'</button>');
 			});
 		});
 	}
