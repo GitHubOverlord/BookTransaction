@@ -14,15 +14,21 @@ $(document).ready(function() {
 		if(json.status === 1){
 			order_data = json.value;
 			console.log(order_data);
-			var bookNames = order_data.includeBookName.split(',');
-			bookNames.pop();
-			var projectIds = order_data.includeJuniorClass.split(',');
-			projectIds.pop();
+			//var bookNames = order_data.includeBookName.split(',');
+			//bookNames.pop();
+			//var projectIds = order_data.includeJuniorClass.split(',');
+			//projectIds.pop();
+			var set = order_data['set'];
+			var bookNames = [];
+			var projectIds = [];
+			$.each(set,function (i,item) {
+				bookNames.push( item.bookName );
+				projectIds.push( item.projectId );
+			});
 
-			console.log( order_data.includeBookName );
+			// console.log( order_data.includeBookName );
 			showBooks (bookNames,user,projectIds);
 
-			var set = order_data['set'];
 			$trs = $( '#myTable tbody tr' )
 			$trs.each(function(i,tr) {
 				$(tr).find('[name="oldDegree"]').val( set[i].oldDegree );
