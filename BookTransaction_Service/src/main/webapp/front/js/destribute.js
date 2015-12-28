@@ -9,6 +9,37 @@ $(document).ready(function() {
 
 	var user = $.parseJSON( $.cookie('user') );
 
+	$.getJSON('/BookTransaction_Service/getMyOrder.action')
+	.done(function(json){
+		if(json.status === 1){
+			order_data = json.value;
+			var bookNames = order_data.includeBookName.split(',');
+			bookNames.pop();
+			var projectIds = order_data.includeJuniorClass.split(',');
+			projectIds.pop();
+
+			showBooks (bookNames,user,projectIds);
+
+			var set = order_data['set'];
+			$trs = $( '#myTable tbody tr' )
+			$trs.each(function(i,tr) {
+				$(tr).find('[name="oldDegree"]').val( set[i].oldDegree );
+				$(tr).find('[name="haveExerciseBook"]').val( set[i].haveExerciseBook );
+				$(tr).find('[name="price"]').val( parseInt(set[i].price) );
+				$(tr).find('[name="describle"]').val( set[i].describle );
+			});
+			$('#myTable').find('[name="orderContactPhone"]').val( order_data.contactPhone );
+			$('#myTable').find('[name="orderContactQQ"]').val( order_data.contactQQ );
+			$('#myTable').find('[name="orderDescribe"]').val( order_data.orderDescribe );
+
+		}else if( json.status === 2 ){
+			// 未登录
+			alert( '您还未登陆 , 请先进行登陆操作' );
+
+			location.href = 'index.html';
+		}
+	);
+
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
 	// 选中书籍
@@ -51,6 +82,12 @@ $(document).ready(function() {
 		});
 		$('#addModal').modal("hide");
 		//显示书籍
+		showBooks (bookNames,user,projectIds);
+		$("#bookName,#grade").find('a.active').removeClass('active');
+		$('#addModal').modal('hide');
+	});
+
+	function showBooks (bookNames,user,projectIds){
 		$.each(bookNames, function(i, item) {
 			var line = [
 				'<tr>',
@@ -96,9 +133,7 @@ $(document).ready(function() {
 			].join('');
 			$('#myTable').append(line);
 		});
-		$("#bookName,#grade").find('a.active').removeClass('active');
-		$('#addModal').modal('hide');
-	});
+	}
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
 	//选中要删除的书籍
