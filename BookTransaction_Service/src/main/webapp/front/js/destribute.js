@@ -1,3 +1,5 @@
+// var URL = 'http://192.168.1.108:8080';
+var URL = '';
 $(document).ready(function() {
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
@@ -16,7 +18,7 @@ $(document).ready(function() {
 		$(this).toggleClass('active').siblings('a').removeClass('active');
 		var grade = $(this).data('value');
 		console.log(user.major)
-		$.getJSON('http://192.168.1.108:8080/BookTransaction_Service/findProjectByMajorId.action', 
+		$.getJSON(URL+'/BookTransaction_Service/findProjectByMajorId.action', 
 			{majorId:user.major,belongJuniorCalss:grade}, 
 			function(json, textStatus) {
 				console.log(json)
@@ -173,7 +175,7 @@ $(document).ready(function() {
 			obj.orderItemBeans = JSON.stringify ( arr );
 			console.log ( JSON.stringify( obj ) );
 			$.ajax({
-				url:'http://192.168.1.108:8080/BookTransaction_Service/publishOrder.action',
+				url:URL + '/BookTransaction_Service/publishOrder.action',
 				type:'post',
 				data:obj,
 				dataType:'json'
@@ -191,7 +193,7 @@ $(document).ready(function() {
 	$("#sent").on('click', function() {
 		
 		$("#tableForm").submit();
-		
+
 	});
 
 });

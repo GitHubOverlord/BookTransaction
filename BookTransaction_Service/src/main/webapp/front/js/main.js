@@ -8,7 +8,8 @@
 	  	return false;
 	}, "和原来的密码不一样");
 })(jQuery);
-var URL = 'http://192.168.1.108:8080';
+// var URL = 'http://192.168.1.108:8080';
+var URL = '';
 // 日期格式化工具
 Date.prototype.format = function (fmt) { //author: meizz 
   var o = {
