@@ -19,7 +19,8 @@ public class ProjectBean {
 	public static final String ATTR_BELONG_MAJOR_NAME = "belongMajorName";
 	private int belongJuniorClss;
 	public static final String ATTR_BELONG_JUNIOR_CLSS = "belongJuniorClss";
-	
+	private String belongMajorId;
+	public static final String ATTR_BELONG_MAJOR_ID = "belongMajorId";
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -43,11 +44,11 @@ public class ProjectBean {
 	}
 
 	@Column(name = "belongMajorName")
-	public String getBelongName() {
+	public String getBelongMajorName() {
 		return belongMajorName;
 	}
 
-	public void setBelongName(String belongMajorName) {
+	public void setBelongMajorName(String belongMajorName) {
 		this.belongMajorName = belongMajorName;
 	}
 
@@ -60,5 +61,13 @@ public class ProjectBean {
 		this.belongJuniorClss = belongJuniorClss;
 	}
 
-	
+	@Column(name = "belongMajorId")
+	public String getBelongMajorId() {
+		return belongMajorId;
+	}
+
+	public void setBelongMajorId(String belongMajorId) {
+		this.belongMajorId = belongMajorId;
+	}
+
 }

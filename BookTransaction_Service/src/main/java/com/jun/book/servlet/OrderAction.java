@@ -10,7 +10,8 @@ import java.util.Set;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.jun.booktransaction.bean.OrderAndOrderItemBean;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jun.booktransaction.bean.OrderBean;
 import com.jun.booktransaction.bean.OrderItemBean;
 import com.jun.booktransaction.bean.UserBean;
@@ -30,7 +31,7 @@ public class OrderAction extends BaseActionSupport {
 	/**
 	 * 所有订单的Json
 	 */
-	private String orderJson;
+	private String orderItemBeans;
 	/**
 	 * 联系人的电话号码
 	 */
@@ -51,12 +52,10 @@ public class OrderAction extends BaseActionSupport {
 	 * 订单发布状态
 	 */
 	private boolean publishStatus;
-	private String searchJuniorClassValue;
-	private String searchDepartmentValue;
-	private String searchMajorValue;
-	private String searchProjectValue;
-	private String includeJuniorClass;
-	private String includeBookName;
+	private String searchJuniorClassValue;// 查询的年级ID
+	private String searchDepartmentValue;// 查询系的ID
+	private String searchMajorValue;// 查询专业的ID
+	private String searchProjectValue;// 查询课程的ID
 	private int limit;
 	private int offset;
 	private String remind = "";
@@ -117,14 +116,6 @@ public class OrderAction extends BaseActionSupport {
 		this.searchProjectValue = searchProjectValue;
 	}
 
-	public String getOrderJson() {
-		return orderJson;
-	}
-
-	public void setOrderJson(String orderJson) {
-		this.orderJson = orderJson;
-	}
-
 	public String getOrderContactPhone() {
 		return orderContactPhone;
 	}
@@ -163,46 +154,60 @@ public class OrderAction extends BaseActionSupport {
 	public void publishOrder() {
 		int status = 0;
 		UserBean userBean = SessionUtils.getSession();
-		OrderBean orderBean = new OrderBean();
-		if (userBean == null || userBean.getUserName().equals("")) {// 没有登录的情况下
+		if (userBean == null) {// 没有登录的情况下
 			status = 2;
 			remind = "您未登录";
 		} else {// 登录了,先删除订单信息，再添加订单信息
 			OrderDao orderDao = new OrderDao();
+			OrderItemDao orderItemDao = new OrderItemDao();
 			HashMap<String, Object> orderMap = new HashMap<String, Object>();
 			orderMap.put(OrderBean.ATTR_BELONG_USER_NAME,
 					userBean.getUserName());
-			orderDao.deleteWhere(orderMap);
-			OrderItemDao orderItemDao = new OrderItemDao();
-			HashMap<String, Object> orderItemMap = new HashMap<String, Object>();
-			orderItemMap.put(OrderItemBean.ATTR_BELONG_ORDER,
-					userBean.getUserName());
-			orderItemDao.deleteWhere(orderItemMap);// 删除订单
+			List<OrderBean> orderBeans = orderDao.findList(orderMap);
+			if (orderBeans != null && orderBeans.size() != 0) {// 存在数据，就删除
+				for (OrderBean orderBean2 : orderBeans) {
+					Set<OrderItemBean> set = orderBean2.getSet();
+					for (OrderItemBean orderItemBean : set) {
+						orderItemDao.delete(orderItemBean.getId());
+					}
+					orderDao.delete(orderBean2.getId());
+				}
+			}
+			System.out.println(orderItemBeans);
+			OrderBean orderBean = new OrderBean();
 			orderBean.setBelongUserName(userBean.getUserName());
 			orderBean.setContactPhone(orderContactPhone);
 			orderBean.setContactQQ(orderContactQQ);
 			orderBean.setCreateDate(new Date().getTime());
 			orderBean.setOrderDescribe(orderDescribe);
 			orderBean.setBelongUserMajorName(userBean.getMajor());
+			List<OrderItemBean> jsonOrderItemBeans = new ArrayList<OrderItemBean>();
+			System.err.println("===============json 开始解析=====================");
+			try {
+				Gson gson = new Gson();
+				jsonOrderItemBeans = gson.fromJson(orderItemBeans,
+						new TypeToken<List<OrderItemBean>>() {
+						}.getType());
+				orderBean.setSet(new HashSet<OrderItemBean>(jsonOrderItemBeans));
+			} catch (Exception e) {
+				System.err.println(e.toString());
+			}
+			
+			System.err.println("===============json 解析完成=====================");
+			System.err.println("==============="+orderBean.getSet().size()+"=====================");
+			String includeBookName = "";
+			String includeJuniorClass = "";
+			for (OrderItemBean orderItemBean : jsonOrderItemBeans) {
+				includeBookName = includeBookName + orderItemBean.getBookName()
+						+ ",";
+				includeJuniorClass = includeJuniorClass
+						+ orderItemBean.getBelongJuniorClass() + ",";
+			}
 			orderBean.setIncludeBookName(includeBookName);
 			orderBean.setIncludeJuniorClass(includeJuniorClass);
-			Set<OrderItemBean> orderItemBeans = new HashSet<OrderItemBean>();
-			for (int i = 0; i < 10; i++) {// 填充书籍
-				OrderItemBean orderItemBean = new OrderItemBean();
-				orderItemBean.setBelongJuniorClass(1);
-				orderItemBean.setBelongMajorId(userBean.getMajor());
-				orderItemBean.setBelongUserName(userBean.getUserName());
-				orderItemBean.setBookName("书名" + i);
-				orderItemBean.setDescrible("这是描述" + i);
-				orderItemBean.setHaveExerciseBook(1);
-				orderItemBean.setOldDegree(90);
-				orderItemBean.setPrice(10.00);
-				orderItemBeans.add(orderItemBean);
-			}
-			orderBean.setSet(orderItemBeans);
 			orderDao.save(orderBean);// 填充订单
 		}
-		PrintObjectToJson.print(response, status, remind, orderBean);
+		PrintObjectToJson.print(response, status, remind, "");
 	}
 
 	// /**
@@ -277,9 +282,10 @@ public class OrderAction extends BaseActionSupport {
 	}
 
 	/**
-	 * 根据条件获取订单
+	 * 根据条件获取订单,如果需要这个条件的全部，那么就 不添加這個搜索條件
 	 */
 	public void getAllOrderByCondition() {
+		String hql = "select orders from OrderBean as orders where order";
 		OrderDao orderDao = new OrderDao();
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		List<OrderBean> orderBeans = orderDao.findList(hashMap, offset, limit);
@@ -296,6 +302,7 @@ public class OrderAction extends BaseActionSupport {
 		Session session = HibernateUtil.getSession();
 		Query query = session.createQuery(sql);
 		query.setString(0, "%" + searchKey + "%");
+		@SuppressWarnings("unchecked")
 		List<OrderBean> orderBeans = query.list();
 		PrintObjectToJson.print(response, 1, remind, orderBeans == null ? ""
 				: orderBeans);
@@ -322,20 +329,12 @@ public class OrderAction extends BaseActionSupport {
 		PrintObjectToJson.print(response, status, remind, "");
 	}
 
-	public String getIncludeJuniorClass() {
-		return includeJuniorClass;
+	public String getOrderItemBeans() {
+		return orderItemBeans;
 	}
 
-	public void setIncludeJuniorClass(String includeJuniorClass) {
-		this.includeJuniorClass = includeJuniorClass;
-	}
-
-	public String getIncludeBookName() {
-		return includeBookName;
-	}
-
-	public void setIncludeBookName(String includeBookName) {
-		this.includeBookName = includeBookName;
+	public void setOrderItemBeans(String orderItemBeans) {
+		this.orderItemBeans = orderItemBeans;
 	}
 
 }

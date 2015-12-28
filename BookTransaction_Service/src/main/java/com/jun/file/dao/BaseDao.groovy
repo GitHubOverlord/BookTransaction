@@ -12,17 +12,17 @@ import java.util.Map
 abstract class BaseDao{
 
 	private def doWithSession(Closure func){
-		Session session = null; // Session¶ÔÏó
+		Session session = null; // Sessionï¿½ï¿½ï¿½ï¿½
 		def result = null;
 		try {
-			// »ñÈ¡Session
+			// ï¿½ï¿½È¡Session
 			session = HibernateUtil.getSession();
-			session.beginTransaction(); // ¿ªÆôÊÂÎñ
+			session.beginTransaction(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			result = func(session);
-			session.getTransaction().commit(); // Ìá½»ÊÂÎñ
+			session.getTransaction().commit(); // ï¿½á½»ï¿½ï¿½ï¿½ï¿½
 		} catch (Exception e) {
-			e.printStackTrace(); // ´òÓ¡Òì³£ĞÅÏ¢
-			session.getTransaction().rollback();// »Ø¹öÊÂÎñ
+			e.printStackTrace(); // ï¿½ï¿½Ó¡ï¿½ì³£ï¿½ï¿½Ï¢
+			session.getTransaction().rollback();// ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -115,10 +115,10 @@ abstract class BaseDao{
 
 	/**
 	 * 
-	 * @param where whereÌõ¼ş
-	 * @param fields ¸üĞÂµÄ×Ö¶Î
-	 * @param object ²åÈëµÄ¶ÔÏó
-	 * @return ÊÇ·ñÕÒµ½ÁË
+	 * @param where whereï¿½ï¿½ï¿½ï¿½
+	 * @param fields ï¿½ï¿½ï¿½Âµï¿½ï¿½Ö¶ï¿½
+	 * @param object ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
+	 * @return ï¿½Ç·ï¿½ï¿½Òµï¿½ï¿½ï¿½
 	 */
 	boolean upsert(Map<String,Object> where,Map<String,Object> fields,Object object){
 		List list = findList(where);

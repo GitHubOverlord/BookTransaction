@@ -69,6 +69,8 @@ public class OrderBean {
 	 */
 	private String includeBookName;
 	public static final String INCLUDE_BOOK_NAME = "includeBookName";
+	private String belongUserNickName;
+	private String belongUserJunirClass;
 	private Set<OrderItemBean> set;
 
 	@Id
@@ -164,7 +166,7 @@ public class OrderBean {
 		this.includeBookName = includeBookName;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "order_id")
 	public Set<OrderItemBean> getSet() {
 		return set;
@@ -172,6 +174,24 @@ public class OrderBean {
 
 	public void setSet(Set<OrderItemBean> set) {
 		this.set = set;
+	}
+
+	@Column(name = "belongUserNickName")
+	public String getBelongUserNickName() {
+		return belongUserNickName;
+	}
+
+	public void setBelongUserNickName(String belongUserNickName) {
+		this.belongUserNickName = belongUserNickName;
+	}
+
+	@Column(name = "belongUserJunirClass")
+	public String getBelongUserJunirClass() {
+		return belongUserJunirClass;
+	}
+
+	public void setBelongUserJunirClass(String belongUserJunirClass) {
+		this.belongUserJunirClass = belongUserJunirClass;
 	}
 
 }

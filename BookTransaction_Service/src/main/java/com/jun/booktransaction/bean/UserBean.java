@@ -59,6 +59,7 @@ public class UserBean implements Serializable {
 	 */
 	private boolean isUseAble;
 	public static String ATTR_IS_USEABLE = "isUseAble";
+	private String majorName;
 
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
@@ -142,5 +143,14 @@ public class UserBean implements Serializable {
 
 	public void setIsUseAble(boolean isUseAble) {
 		this.isUseAble = isUseAble;
+	}
+
+	@Column(name = "majorName")
+	public String getMajorName() {
+		return majorName;
+	}
+
+	public void setMajorName(String majorName) {
+		this.majorName = majorName;
 	}
 }

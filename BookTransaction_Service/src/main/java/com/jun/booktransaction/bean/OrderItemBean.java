@@ -31,6 +31,8 @@ public class OrderItemBean {
 	public static final String ATTR_PRICE = "price";
 	private String describle;// 描述
 	public static final String ATTR_DESCRIBLE = "describle";
+	private String projectId;
+	public static final String ATTR_PROJECT_ID = "projectId";
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -107,15 +109,6 @@ public class OrderItemBean {
 		this.price = price;
 	}
 
-	@Column(name = "describle")
-	public String getDescrible() {
-		return describle;
-	}
-
-	public void setDescrible(String describle) {
-		this.describle = describle;
-	}
-
 	@Column(name = "belongMajorId")
 	public String getBelongMajorId() {
 		return belongMajorId;
@@ -123,6 +116,24 @@ public class OrderItemBean {
 
 	public void setBelongMajorId(String belongMajorId) {
 		this.belongMajorId = belongMajorId;
+	}
+
+	@Column(name = "projectId")
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	@Column(name = "describle")
+	public String getDescrible() {
+		return describle;
+	}
+
+	public void setDescrible(String describle) {
+		this.describle = describle;
 	}
 
 }
