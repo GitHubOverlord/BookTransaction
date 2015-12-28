@@ -13,7 +13,7 @@ $(document).ready(function() {
 	.done(function(json){
 		if(json.status === 1){
 			order_data = json.value;
-			console.log(roder_data);
+			console.log(order_data);
 			var bookNames = order_data.includeBookName.split(',');
 			bookNames.pop();
 			var projectIds = order_data.includeJuniorClass.split(',');
