@@ -59,7 +59,7 @@ $(document).ready(function() {
 		var grade = $(this).data('value');
 		console.log(user.majorId)
 		$.getJSON(URL+'/BookTransaction_Service/findProjectByMajorId.action', 
-			{majorId:user.major,belongJuniorCalss:grade}, 
+			{majorId:user.majorId,belongJuniorCalss:grade}, 
 			function(json, textStatus) {
 				console.log(json)
 				course = json.value;

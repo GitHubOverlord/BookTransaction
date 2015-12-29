@@ -363,6 +363,7 @@ jQuery(document).ready(function($) {
 		$.cookie('user',JSON.stringify(user),{ expires: 7 });
 		// 隐藏登录框
 		$('#loginModal').modal('hide');
+		$('#orginPassword').val(user.psw);
 		// 显示用户名和默认图片
 		$('.userName').find('a').html( '<img class="img-circle userPhoto" src="img/userphoto/default.png" height="30" width="30" > ' + user.nickName);
 		$('.userName').show();
@@ -394,6 +395,7 @@ jQuery(document).ready(function($) {
 		$('.userName,.releaseBook,.loginOut').hide();
 		$.cookie('user','',{expires:-1});
 		$.get(URL+'/BookTransaction_Service/loginOutAction');
+		location.href = 'index.html';
   }
 // //////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////
@@ -463,7 +465,11 @@ jQuery(document).ready(function($) {
 				$('#messageModal').find('modal-body').text(msg);
 				setTimeout(function(){ 
 					$('#messageModal').modal('show'); 
-				},1000)
+				},1000);
+				var user = JSON.stringify ( $.cookie('user') );
+				for(key in ajaxData){
+					user[key] = ajaxData[key];
+				}
 			});
 			
 		}

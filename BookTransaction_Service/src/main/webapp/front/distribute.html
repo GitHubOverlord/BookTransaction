@@ -173,12 +173,72 @@
 				<div class="modal-content">
 					<div class="modal-body text-center">
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-primary">确定</button>
-					</div>
 				</div>
 			</div>
+		</div>
+		<div id="modifyModal" class="modal fade">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">修改个人资料</h4>
+		      </div>
+		      <div class="modal-body">
+						<form id="modifyForm" >
+							<div class="modifyError tc f20"></div>
+							<input type="hidden" name="orginPassword" id="orginPassword" >
+							<div class="form-group">
+						    <label for="nickName">昵称</label>
+						    <input type="text" class="form-control" name="nickName"  placeholder="昵称">
+						  </div>
+							<div class="error"></div>
+						  <div class="form-group">
+						    <label for="oldPassWord">旧密码</label>
+						    <input type="password" class="form-control" name="oldPassWord"  placeholder="新密码">
+						  </div>
+						  <div class="error"></div>
+						  <div class="form-group">
+						    <label for="psw">新密码</label>
+						    <input type="password" class="form-control" name="psw"  placeholder="新密码">
+						  </div>
+						  <div class="error"></div>
+						  <div class="form-group">
+						    <label for="grade">年级</label>
+						    <select name="grade" class="form-control">
+						     	<option value="1">大一上</option>
+						     	<option value="2">大一下</option>
+						     	<option value="3">大二上</option>
+						     	<option value="4">大二下</option>
+						     	<option value="5">大三上</option>
+						     	<option value="6">大三下</option>
+						     	<option value="7">大四上</option>
+						     	<option value="8">大四下</option>
+						    </select>
+						  </div>
+						  <div class="error"></div>
+						  
+						</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" id="modifyBtn" class="btn btn-primary btn-block">确认修改</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- logoutModal -->
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		        您确定要退出么？
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary" id="sureLogout">确定</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		      </div>
+		    </div>
+		  </div>
 		</div>
 		<script type="text/javascript" src="js/jquery/jquery-2.1.0.min.js"></script>
 		<script type="text/javascript" src="js/cookie/jquery.cookie.js"></script>
