@@ -260,7 +260,7 @@ jQuery(document).ready(function($) {
 			grade: {
 				required: true
 			},
-			major: {
+			majorId: {
 				required: true
 			}
 		},
