@@ -407,7 +407,7 @@ jQuery(document).ready(function($) {
 	$("#navModifyBtn").click(function(e) {
 		$("#modifyModal").modal('show');
 		var user = $.parseJSON( $.cookie('user') );
-		$modifyForm.find('[name]').each(function (i,item) {
+		$('#modifyForm').find('[name]').each(function (i,item) {
 			var key = $(item).attr('name');
 			$(item).val( user[key] );
 		});
